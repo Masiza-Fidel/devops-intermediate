@@ -10,14 +10,22 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-#requirements.txt
-RUN pip install  -r requirements.txt
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    postgresql-client
+
+# Install project dependencies
+RUN pip install -r requirements.txt
 
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
 
-# Define environment variable
-ENV NAME World
+# Define environment variables for PostgreSQL connection
+ENV POSTGRES_DB=mydbname \
+    POSTGRES_USER=mydbuser \
+    POSTGRES_PASSWORD=mydbpassword \
+    POSTGRES_HOST=db \
+    POSTGRES_PORT=5432
 
-# Run app.py when the container launches
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Wait for PostgreSQL to be ready before running the application
+CMD ["sh", "-c", "while ! nc -z $POSTGRES_HOST $POSTGRES_PORT; do sleep 1; done; python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
