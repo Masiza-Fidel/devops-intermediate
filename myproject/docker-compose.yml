@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: Man-maker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: masizacreatives!3
+    ports:
+      - "5433:5432"
+    networks:
+      - app-network
+
+  web:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+networks:
+  app-network:
