@@ -1,0 +1,20 @@
+<!-- shoes/templates/shoes/list_shoes.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List of Shoes</title>
+</head>
+<body>
+    <h2>List of Shoes</h2>
+    <ul>
+        {% for shoe in shoes %}
+            <li>
+                <img src="{{ shoe.image.url }}" alt="{{ shoe.brand }} - {{ shoe.type }}">
+                <p><strong>{{ shoe.brand }} - {{ shoe.type }}</strong></p>
+                <p>{{ shoe.description }}</p>
+                <p>Price: ${{ shoe.price }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
