@@ -22,6 +22,7 @@ def create_shoe(request):
 
 
 
+# shoes/views.py
 from rest_framework import generics
 from django.shortcuts import render
 from .models import Shoe
@@ -38,6 +39,7 @@ class ShoeListCreateView(generics.ListCreateAPIView):
         # Check if the request wants JSON or HTML
         if self.request.accepted_renderer.format == 'html':
             context = {'shoes': serializer.data}
-            return render(request, 'shoe_list.html', context)
+            return render(request, 'shoes/list_shoes.html', context)
         else:
-            return self.get_paginated_response(serializer.data)
+            return super().list(request, *args, **kwargs)
+

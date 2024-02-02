@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from appetite.views import create_shoe,ShoeListCreateView
+from graphene_django.views import GraphQLView
+
 
 
 
