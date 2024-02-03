@@ -2,3 +2,6 @@ asgiref==3.7.2
 Django~=3.2.0
 sqlparse==0.4.4
 tzdata==2023.4
+Pillow==8.4.0   # Add this line if not present
+djangorestframework==3.14.0
+
