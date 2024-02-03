@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
 
 
 # Install project dependencies
-RUN pip install -r requirements.txt
+RUN pip install -r myproject/requirements.txt
 
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
