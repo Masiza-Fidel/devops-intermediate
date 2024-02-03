@@ -85,7 +85,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'masizacreatives!3',
         'HOST': 'localhost',  # This is the name of the PostgreSQL service in your Docker Compose file
-        'PORT':"5432" ,
+        'PORT':"5433:5432",
 
     }
 }
