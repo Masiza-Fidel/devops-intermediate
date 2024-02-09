@@ -31,8 +31,8 @@ jobs:
 
     - name: Set up Django
       run: |
-        python manage.py migrate  # Adjust as per your Django setup
-        python manage.py collectstatic --noinput  # If needed
+        python myproject/manage.py migrate  # Adjust as per your Django setup
+        python myproject/manage.py collectstatic --noinput  # If needed
 
     - name: Run Tests
       run: |
