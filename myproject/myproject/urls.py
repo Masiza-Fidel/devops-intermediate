@@ -19,7 +19,6 @@ from django.urls import path,include
 from appetite.views import create_shoe,ShoeListCreateView
 from django.conf import settings
 from django.conf.urls.static import static
-from graphene_django.views import GraphQLView
 
 
 
@@ -32,7 +31,6 @@ urlpatterns = [
     path('appetite/', include('appetite.urls')),
     path('', create_shoe, name='create_shoe'),
     path('shoes/', ShoeListCreateView.as_view(), name='shoe-list-create'),
-    path('graphql/', GraphQLView.as_view(graphiql=True)),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
