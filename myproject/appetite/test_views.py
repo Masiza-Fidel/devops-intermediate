@@ -1,29 +1,38 @@
-# shoes/tests/test_views.py
-import json
+# Import necessary modules
+from django.test import TestCase, Client
 from django.urls import reverse
-from rest_framework import status
-from rest_framework.test import APITestCase
 from .models import Shoe
 
-class ShoeAPITestCase(APITestCase):
+class ShoeListViewTests(TestCase):
     def setUp(self):
-        # Create some sample shoes for testing
-        Shoe.objects.create(type='sneakers', brand='Nike', description='Comfortable sneakers', price=150.00)
-        Shoe.objects.create(type='boots', brand='Timberland', description='Durable boots', price=200.00)
+        # Create sample shoes for testing
+        self.shoe1 = Shoe.objects.create(type='sneakers', brand='Nike', description='Sample description 1', price=99.99)
+        self.shoe2 = Shoe.objects.create(type='boots', brand='Timberland', description='Sample description 2', price=149.99)
 
-    def test_create_shoe(self):
-        url = reverse('shoe-list-create')
-        data = {'type': 'casual', 'brand': 'Adidas', 'description': 'Stylish casual shoes', 'price': 120.00}
-        
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Shoe.objects.count(), 3)
+    def test_shoe_list_view(self):
+        # Test if the shoe list view returns status code 200
+        response = self.client.get(reverse('shoe-list-create'))
+        self.assertEqual(response.status_code, 200)
 
-    def test_list_shoes(self):
-        url = reverse('shoe-list-create')
-        response = self.client.get(url)
-        
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)  # Assuming you have 2 initial shoes
+    def test_shoe_list_view_with_filter(self):
+        # Test if the shoe list view filters correctly based on type
+        response = self.client.get(reverse('shoe-list-create') + '?type=sneakers')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.shoe1.brand)
+        self.assertNotContains(response, self.shoe2.brand)
 
-    # Add more tests as needed
+    def test_shoe_list_view_with_search(self):
+        # Test if the shoe list view filters correctly based on brand
+        response = self.client.get(reverse('shoe-list-create') + '?brand=Nike')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.shoe1.brand)
+        self.assertNotContains(response, self.shoe2.brand)
+
+class CreateShoeViewTests(TestCase):
+    def test_create_shoe_view_get(self):
+        # Test if the create shoe view returns status code 200 for GET request
+        response = self.client.get(reverse('create_shoe'))
+        self.assertEqual(response.status_code, 200)
+
+    # You can add more tests here for POST request handling, form validation, etc.
+

@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponseBadRequest 
-
+from rest_framework import generics, renderers
 from .models import Shoe
+from .serializers import ShoeSerializer
 
 def create_shoe(request):
     if request.method == 'POST':
@@ -20,26 +21,27 @@ def create_shoe(request):
 
     return render(request, 'upload_media.html')
 
-
-
-# shoes/views.py
-from rest_framework import generics
-from django.shortcuts import render
-from .models import Shoe
-from .serializers import ShoeSerializer
-
 class ShoeListCreateView(generics.ListCreateAPIView):
     queryset = Shoe.objects.all().order_by('-id')  # Order by ID to get the latest first
     serializer_class = ShoeSerializer
+    renderer_classes = [renderers.TemplateHTMLRenderer]  # Corrected class name
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
+        
+        # Fetch search parameters from the request GET parameters
+        shoe_type = self.request.GET.get('type')
+        brand = self.request.GET.get('brand')
+
+        # Apply filters based on search parameters
+        if shoe_type:
+            queryset = queryset.filter(type=shoe_type)
+        if brand:
+           queryset = queryset.filter(brand__iexact=brand)
+
+
         serializer = self.get_serializer(queryset, many=True)
 
-        # Check if the request wants JSON or HTML
-        if self.request.accepted_renderer.format == 'html':
-            context = {'shoes': serializer.data}
-            return render(request, 'shoes/list_shoes.html', context)
-        else:
-            return super().list(request, *args, **kwargs)
-
+        # Always render the HTML template
+        context = {'shoes': serializer.data}
+        return render(request, 'shoe_list.html', context)

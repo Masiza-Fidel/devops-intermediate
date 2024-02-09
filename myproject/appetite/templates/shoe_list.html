@@ -6,10 +6,18 @@
 </head>
 <body>
     <h2>List of Shoes</h2>
+    <form action="{% url 'shoe-list-create' %}" method="GET">
+        {% csrf_token %}
+        <input type="text" name="type" placeholder="Type">
+        <input type="text" name="brand" placeholder="Brand">
+        <button type="submit">Search</button>
+    </form>
+
+   
     <ul>
         {% for shoe in shoes %}
             <li>
-                <img src="{{ shoe.image.url }}" alt="{{ shoe.brand }} - {{ shoe.type }}">
+                <img src="{{ shoe.image }}">
                 <p><strong>{{ shoe.brand }} - {{ shoe.type }}</strong></p>
                 <p>{{ shoe.description }}</p>
                 <p>Price: ${{ shoe.price }}</p>

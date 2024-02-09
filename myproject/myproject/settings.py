@@ -25,6 +25,7 @@ SECRET_KEY = 'django-insecure--)wd2g=pl)e&85i)6vlv^i5+9p_^rh3@%mje-91p2e0%hrtee%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = []
 
 
@@ -85,7 +86,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'masizacreatives!3',
         'HOST': 'localhost',  # This is the name of the PostgreSQL service in your Docker Compose file
-        'PORT':"5433:5432",
+        'PORT':"5433",
 
     }
 }
@@ -136,3 +137,4 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
